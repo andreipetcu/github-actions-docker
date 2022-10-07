@@ -18,6 +18,9 @@ jobs:
       - name: Run docker image
         run: |
           docker run --name test -d -p 80:80 -d testing:`git rev-parse --short HEAD`
+      - name: wtf
+        run: |
+          docker ps; netstat -tulnp
       - name: Test docker container
         run: |
           curl http://127.0.0.1
