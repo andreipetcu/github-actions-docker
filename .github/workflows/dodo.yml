@@ -1,0 +1,23 @@
+name: E2E on Chrome
+on: [push]
+jobs:
+  dododo:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Build Docker image
+        run: |
+          docker build \
+          -t testing:`git rev-parse --short HEAD` \
+          -f ./.docker/Dockerfile \
+          .
+      - name: Run docker image
+        run: |
+          docker run --name test -p 80:80 testing:`git rev-parse --short HEAD`
+      - name: Test docker container
+        run: |
+          curl http://127.0.0.1
